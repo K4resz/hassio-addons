@@ -1,11 +1,8 @@
 # Meter Reader
 
-Put a webcam in front of your utility meter and OCR.space sends the reading over MQTT to a MQTT server of your choice.
+Put a webcam in front of your utility meter and OCR.space sends the reading over MQTT to a MQTT server/broker of your choice.
 
-note: if you restart the addon you will need to update the baseline value.
-
-
-## Config
+## Configuration
 
 upd_interval: value in seconds to be used as interval between data refreshes.
 
@@ -21,7 +18,7 @@ under: max you expect it to go down during an update interval (where I live sola
 
 over: max you expect it to go up during an update interval
 
-aws_access_key_id, aws_secret_access_key, region: see link on how to set up an AWS account. Did not really see how to get your region, I use "us-east-2" (https://docs.aws.amazon.com/rekognition/latest/dg/setting-up.html)
+ocr.space token: see https://ocr.space/OCRAPI on how to get free API token
 
 mqtt_host, mqtt_port, mqtt_user, mqtt_pwd: find and get access to your MQTT server
 
