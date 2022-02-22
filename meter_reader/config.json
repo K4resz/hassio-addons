@@ -1,10 +1,10 @@
 {
     "name": "Meter reader",
-    "version": "0.1.5",
+    "version": "0.2.0",
     "slug": "meterreader",
     "homeassistant_api": "no",
-    "description": "Put a webcam in front of your utility meter and let AWS push the reading over mqtt",
-    "url": "https://github.com/Jhhbe",
+    "description": "Put a webcam in front of your utility meter and classify the image with an online OCR api push the reading over mqtt",
+    "url": "https://github.com/K4resz",
     "startup": "application",
     "boot": "auto",
     "arch": ["aarch64", "amd64", "armv7", "i386"],
