@@ -17,6 +17,9 @@ base_up  = baseline + int(config_json["over"])
 prev = baseline
 reading = ""
 
+def error(msg):
+    print(f"#### ERROR: {msg} ####")
+
 def classify(path_to_image, base_low, baseline, base_up):
     print("Calling model...")
 
@@ -48,7 +51,9 @@ def classify(path_to_image, base_low, baseline, base_up):
         reading = s
         print(base_low, value, base_up)
     else:
-        reading = prev
+        error("Reading classification value is outside the acceptible (low-high) range.")
+        # reading = prev
+        return ""
 
     print(f"Reading: {reading}")
     return reading
@@ -82,6 +87,7 @@ def publish_mqtt(client, reading):
     client.publish(config_json["mqtt_topic"], reading)
 
 def publish_low_high_mqtt(client, low, high):
+    print("Sending low and high data range...")
     client.publish("home/band/low", str(low))
     client.publish("home/band/high", str(high))
 
@@ -107,8 +113,7 @@ def run():
             publish_mqtt(client, reading)
             publish_low_high_mqtt(client, base_low, base_up)
         else:
-            print("### Reading COMPROMISED! ###")
-            print("Sending low and high data...")
+            error("Reading COMPROMISED!")
             base_low = base_low - int(config_json["under"])
             base_up  = base_up + int(config_json["over"])
             publish_low_high_mqtt(client, base_low, base_up)
