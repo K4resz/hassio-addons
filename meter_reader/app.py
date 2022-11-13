@@ -23,7 +23,9 @@ def error(msg):
 
 def classify(path_to_image, base_low, baseline, base_up):
     print("Calling model...")
-
+    
+    global reading
+    
     # model access can be replaced here
     # =================================
     response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'])
@@ -90,6 +92,7 @@ def run():
     
     while True:
         
+        print(time.ctime())
         print('Classifying image...')
         reading = classify(IMAGE_PATH, base_low, baseline, base_up)
         print("Classification done.")
