@@ -100,7 +100,7 @@ def run():
         # print("Photo downloaded.")
 
         print('Classifying image...')
-        reading = classify(IMAGE_PATH, base_low, baseline, base_up)
+        reading = classify(IMAGE_PATH, baseline, base_low, base_up)
         print("Classification done.")
 
         print("Connecting to MQTT...")
