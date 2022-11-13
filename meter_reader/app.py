@@ -6,11 +6,11 @@ from ocr_space import ocr_space_file
 import re
 
 #IMAGE_PATH = "/config/www/meter.jpg"
-IMAGE_PATH = config_json['image_path']
 CONFIG_PATH = "/data/options.json"
 
 config_json = json.loads(open(CONFIG_PATH).read())
 
+IMAGE_PATH = config_json['image_path']
 baseline = int(config_json["baseline"])
 base_low = baseline - int(config_json["under"])
 base_up  = baseline + int(config_json["over"])
