@@ -5,7 +5,8 @@ import time
 from ocr_space import ocr_space_file
 import re
 
-IMAGE_PATH = "/config/www/meter.jpg"
+#IMAGE_PATH = "/config/www/meter.jpg"
+IMAGE_PATH = config_json['image_path']
 CONFIG_PATH = "/data/options.json"
 
 config_json = json.loads(open(CONFIG_PATH).read())
@@ -94,9 +95,9 @@ def publish_low_high_mqtt(client, low, high):
 
 def run():
     while True:
-        print("Starting image gathering process...")
-        take_photo(IMAGE_PATH)
-        print("Photo downloaded.")
+        # print("Starting image gathering process...")
+        # take_photo(IMAGE_PATH)
+        # print("Photo downloaded.")
 
         print('Classifying image...')
         reading = classify(IMAGE_PATH, base_low, baseline, base_up)
