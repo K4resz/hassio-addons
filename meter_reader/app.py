@@ -97,6 +97,7 @@ def run():
     global baseline
     global base_low
     global base_up
+    global prev
     
     while True:
         # print("Starting image gathering process...")
