@@ -68,7 +68,8 @@ def take_photo(path):
     Accesses image data from IP camera, and downloads the binary data to a file into the location specified in `path`
     """
     # download the url contents in binary format
-    r = requests.get(config_json["url"], auth=(config_json["user"], config_json["password"]))
+    r = requests.get(config_json["url"])
+    # r = requests.get(config_json["url"], auth=(config_json["user"], config_json["password"]))
     # open method to open a file on your system and write the contents
     with open(path, "wb") as code:
         code.write(r.content)
