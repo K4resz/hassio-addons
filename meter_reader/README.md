@@ -6,13 +6,9 @@ Put a webcam in front of your utility meter, let OCR.space read, then send the r
 
 upd_interval: value in seconds to be used as interval between data refreshes.
 
-url: where to find the picture of your meter (webcam) - it will be stored temporarily in folder /config/www
+image_path: where to find the picture of your meter (camera)
 
-user: basic authentication for cam
-
-password: password to obtain webcam picture
-
-baseline: current reading of your meter
+initial: initial/current reading of your meter
 
 under: max you expect it to go down during an update interval (where I live solar panels allow meters to run backwards)
 
