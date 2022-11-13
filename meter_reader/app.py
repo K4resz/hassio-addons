@@ -64,18 +64,6 @@ def reader(file):
         encoded_string = image_file.read()
         return encoded_string
 
-def take_photo(path):
-    """
-    Accesses image data from IP camera, and downloads the binary data to a file into the location specified in `path`
-    """
-    # download the url contents in binary format
-    r = requests.get(config_json["url"])
-    # r = requests.get(config_json["url"], auth=(config_json["user"], config_json["password"]))
-    # open method to open a file on your system and write the contents
-    with open(path, "wb") as code:
-        code.write(r.content)
-    print("File downloaded")
-
 def connect():
     client = mqtt.Client("meter_reader")
     client.username_pw_set(username=config_json["mqtt_user"], password=config_json["mqtt_pwd"])
@@ -98,11 +86,9 @@ def run():
     global base_low
     global base_up
     global prev
+    global reading
     
     while True:
-        # print("Starting image gathering process...")
-        # take_photo(IMAGE_PATH)
-        # print("Photo downloaded.")
         
         print('Classifying image...')
         reading = classify(IMAGE_PATH, base_low, baseline, base_up)
