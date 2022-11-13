@@ -11,7 +11,7 @@ CONFIG_PATH = "/data/options.json"
 config_json = json.loads(open(CONFIG_PATH).read())
 
 IMAGE_PATH = config_json['image_path']
-baseline = int(config_json["baseline"])
+baseline = int(config_json["initial"])
 base_low = baseline - int(config_json["under"])
 base_up  = baseline + int(config_json["over"])
 
@@ -94,13 +94,17 @@ def publish_low_high_mqtt(client, low, high):
     client.publish("home/band/high", str(high))
 
 def run():
+    global baseline
+    global base_low
+    global base_up
+    
     while True:
         # print("Starting image gathering process...")
         # take_photo(IMAGE_PATH)
         # print("Photo downloaded.")
-
+        
         print('Classifying image...')
-        reading = classify(IMAGE_PATH, baseline, base_low, base_up)
+        reading = classify(IMAGE_PATH, base_low, baseline, base_up)
         print("Classification done.")
 
         print("Connecting to MQTT...")
