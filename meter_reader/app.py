@@ -46,7 +46,7 @@ def classify(path_to_image, base_low, baseline, base_up):
             int(digit)
             s += digit
         except ValueError:
-            s += "0"
+            s += 0
 
     value = int(s)
     if (base_low <= value and value <= base_up):
