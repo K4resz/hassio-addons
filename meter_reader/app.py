@@ -54,7 +54,7 @@ def classify(path_to_image, base_low, baseline, base_up):
         reading = s
         print(base_low, value, base_up)
     else:
-        error("Reading classification value is outside the acceptible (low-high) range.")
+        error("Reading classification value is outside the acceptable (low-high) range.")
         # reading = prev
         return ""
 
