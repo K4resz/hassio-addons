@@ -28,7 +28,7 @@ def classify(path_to_image, base_low, baseline, base_up):
     
     # model access can be replaced here
     # =================================
-    response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], overlay=False, language='eng', OCREngine=5)
+    response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'])
     # =================================
 
     print("Model response received.")
