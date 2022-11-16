@@ -25,7 +25,7 @@ RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
 
 # Copy data for add-on
-COPY ocr_aws.py /
+# COPY ocr_aws.py /
 
 COPY ocr_space.py /
 COPY app.py /
