@@ -5,15 +5,14 @@ import time
 from ocr_space import ocr_space_file
 import re
 
-#IMAGE_PATH = "/config/www/meter.jpg"
 CONFIG_PATH = "/data/options.json"
 
 config_json = json.loads(open(CONFIG_PATH).read())
 
 IMAGE_PATH = config_json['image_path']
-baseline = int(config_json["initial"])
-base_low = baseline - int(config_json["under"])
-base_up  = baseline + int(config_json["over"])
+baseline = float(config_json["initial"])
+base_low = baseline - float(config_json["max_decrease"])
+base_up  = baseline + float(config_json["max_increase"])
 
 prev = baseline
 reading = ""
@@ -28,7 +27,7 @@ def classify(path_to_image, base_low, baseline, base_up):
     
     # model access can be replaced here
     # =================================
-    response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'])
+    response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], ocr_engine=config_json['ocr_engine'])
     # =================================
 
     print("Model response received.")
@@ -56,6 +55,7 @@ def classify(path_to_image, base_low, baseline, base_up):
         print(base_low, value, base_up)
     else:
         error("Reading classification value is outside the acceptable (low-high) range.")
+        print(base_low, value, base_up)
         # reading = prev
         return ""
 
@@ -105,14 +105,14 @@ def run():
         if reading != "":
             print("✔️✔️✔️ Reading OK! ✔️✔️✔️")
             baseline = float(reading)
-            base_low = baseline - float(config_json["under"])
-            base_up  = baseline + float(config_json["over"])
+            base_low = baseline - float(config_json["max_decrease"])
+            base_up  = baseline + float(config_json["max_increase"])
             publish_mqtt(client, reading)
             publish_low_high_mqtt(client, base_low, base_up)
         else:
-            error("Reading COMPROMISED!")
-            base_low = base_low - float(config_json["under"])
-            base_up  = base_up + float(config_json["over"])
+            error("!!! Reading COMPROMISED! !!!")
+            base_low = base_low - float(config_json["max_decrease"])
+            base_up  = base_up + float(config_json["max_increase"])
             publish_low_high_mqtt(client, base_low, base_up)
 
         print("Closing MQTT connection...")
