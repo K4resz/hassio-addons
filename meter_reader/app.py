@@ -5,9 +5,13 @@ import time
 from ocr_space import ocr_space_file
 import re
 
+print("Starting up")
+
 CONFIG_PATH = "/data/options.json"
 
 config_json = json.loads(open(CONFIG_PATH).read())
+
+print("Config loaded")
 
 IMAGE_PATH = config_json['image_path']
 baseline = float(config_json["initial"])
@@ -16,6 +20,8 @@ base_up  = baseline + float(config_json["max_increase"])
 
 prev = baseline
 reading = ""
+
+print("Variables initial setup done")
 
 def error(msg):
     print(f"#### ERROR: {msg} ####")
@@ -91,6 +97,8 @@ def run():
     global prev
     global reading
     
+    print("Starting cycles")
+
     while True:
         
         print(time.ctime())
