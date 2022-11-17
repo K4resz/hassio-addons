@@ -44,12 +44,12 @@ def classify(path_to_image, base_low, baseline, base_up):
     s = ""
     for digit in processed:
         try:
-            int(digit)
+            float(digit)
             s += digit
         except ValueError:
             s += "0"
 
-    value = int(0 if s == "" else s)
+    value = float(0 if s == "" else s)
     if (base_low <= value and value <= base_up):
         prev = reading
         reading = s
@@ -104,15 +104,15 @@ def run():
 
         if reading != "":
             print("✔️✔️✔️ Reading OK! ✔️✔️✔️")
-            baseline = int(reading)
-            base_low = baseline - int(config_json["under"])
-            base_up  = baseline + int(config_json["over"])
+            baseline = float(reading)
+            base_low = baseline - float(config_json["under"])
+            base_up  = baseline + float(config_json["over"])
             publish_mqtt(client, reading)
             publish_low_high_mqtt(client, base_low, base_up)
         else:
             error("Reading COMPROMISED!")
-            base_low = base_low - int(config_json["under"])
-            base_up  = base_up + int(config_json["over"])
+            base_low = base_low - float(config_json["under"])
+            base_up  = base_up + float(config_json["over"])
             publish_low_high_mqtt(client, base_low, base_up)
 
         print("Closing MQTT connection...")

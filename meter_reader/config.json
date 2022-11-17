@@ -1,6 +1,6 @@
 {
     "name": "Meter reader",
-    "version": "0.2.4.b12",
+    "version": "0.2.4.b13",
     "slug": "meterreader",
     "homeassistant_api": "no",
     "description": "Put a webcam in front of your utility meter and classify the image with an online OCR api and push the reading over mqtt",
@@ -29,7 +29,7 @@
     "schema": { 
         "upd_interval": "int", 
         "image_path": "str", 
-        "initial": "int", 
+        "initial": "float", 
         "under": "int", 
         "over": "int", 
         "ocr_api_key": "str", 
