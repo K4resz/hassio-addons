@@ -16,10 +16,8 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-RUN \
-    apk add --no-cache \ 
-        curl
-        python3
+RUN apk add --no-cache curl
+RUN apk add --no-cache python3
 
 # install .py script dependency
 RUN pip install requests
