@@ -18,9 +18,11 @@ https://www.home-assistant.io/integrations/sensor.mqtt/
 
 ## Configuration
 
+### Reader
+
 upd_interval: value in seconds to be used as interval between data refreshes.
 
-image_path: where to find the picture of your meter (camera)
+image_path: where to find the snapshot of your meter camera image
 
 initial: initial/current reading of your meter
 
@@ -28,9 +30,13 @@ max_increase: maximum expected increase during the reading period
 
 max_decrease: maximum expected decrease during the reading period
 
+### OCR
+
 ocr_api_key: see https://ocr.space/OCRAPI on how to get free API token
 
 ocr_engine: see https://ocr.space/OCRAPI for available engines, default is OCR Engine5
+
+### MQTT
 
 mqtt_host, mqtt_port, mqtt_user, mqtt_pwd: find and get access to your MQTT server/broker
 

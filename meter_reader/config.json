@@ -1,45 +1,61 @@
 {
     "name": "Meter reader",
-    "version": "0.3.b1",
+    "version": "0.3.b2",
     "slug": "meterreader",
     "homeassistant_api": "no",
     "description": "Classify utility meter image with an online OCR api and push the reading over mqtt",
     "url": "https://github.com/K4resz",
     "startup": "application",
+    "services": [
+        "mqtt:need"
+    ],
     "boot": "auto",
     "arch": [
         "aarch64", 
-        "amd64", 
+        "amd64",
+        "armhf", 
         "armv7", 
         "i386"
     ],
-    "options": { 
-        "upd_interval": 1800, 
-        "image_path": "/config/www/snapshots/meter.jpg", 
-        "initial": null, 
-        "max_increase": 1, 
-        "max_decrease": 0,
-        "ocr_api_key": null, 
-        "ocr_engine": 5,
-        "mqtt_host": "192.168.x.x", 
-        "mqtt_port": 1883, 
-        "mqtt_user": null, 
-        "mqtt_pwd": null, 
-        "mqtt_topic": "home/meter" 
+    "options": {
+        "reader": { 
+            "upd_interval": 1800, 
+            "image_path": "/config/www/snapshots/meter.jpg", 
+            "initial": "", 
+            "max_increase": 1, 
+            "max_decrease": 0
+        },
+        "ocr": {
+            "ocr_api_key": "", 
+            "ocr_engine": 5
+        },
+        "mqtt": {
+            "mqtt_host": "192.168.x.x", 
+            "mqtt_port": 1883, 
+            "mqtt_user": "", 
+            "mqtt_pwd": "", 
+            "mqtt_topic": "home/meter" 
+        }
     },
     "schema": { 
-        "upd_interval": "int", 
-        "image_path": "str", 
-        "initial": "int", 
-        "max_increase": "int", 
-        "max_decrease": "int", 
-        "ocr_api_key": "str", 
-        "ocr_engine": "int",
-        "mqtt_host": "str", 
-        "mqtt_port": "int", 
-        "mqtt_user": "str", 
-        "mqtt_pwd": "str", 
-        "mqtt_topic": "str"
+        "reader": { 
+            "upd_interval": "int", 
+            "image_path": "str", 
+            "initial": "int", 
+            "max_increase": "int", 
+            "max_decrease": "int"
+        },
+        "ocr": {
+            "ocr_api_key": "str", 
+            "ocr_engine": "int"
+        },
+        "mqtt": {
+            "mqtt_host": "str", 
+            "mqtt_port": "int", 
+            "mqtt_user": "str", 
+            "mqtt_pwd": "password", 
+            "mqtt_topic": "str" 
+        }
     },
     "map": [
         "config:rw"
