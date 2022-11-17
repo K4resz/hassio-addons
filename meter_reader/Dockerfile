@@ -10,19 +10,21 @@ ARG BUILD_REF
 ARG BUILD_VERSION
 
 LABEL \
-    io.hass.arch="${BUILD_ARCH}" \
+    io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
     io.hass.type="addon" \
     io.hass.version=${BUILD_VERSION} \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-RUN apk add --no-cache curl
-RUN apk add --no-cache python3
+RUN \
+    apk add --no-cache \ 
+        curl
+        python3
 
 # install .py script dependency
-RUN pip3 install requests
-RUN pip3 install paho-mqtt
-RUN pip3 install python-dotenv
+RUN pip install requests
+RUN pip install paho-mqtt
+RUN pip install python-dotenv
 
 # Copy data for add-on
 # COPY ocr_aws.py /
