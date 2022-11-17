@@ -36,7 +36,8 @@ def classify(path_to_image, base_low, baseline, base_up):
 
     print("Post-processing response...")
     parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
-    processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
+    # processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
+    processed = re.sub(r"( )", "", parsedText)[:8]
 
     print(f"Recognised digits: {processed}")
 
