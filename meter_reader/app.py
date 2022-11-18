@@ -1,3 +1,5 @@
+print("Starting up...")
+
 import paho.mqtt.client as mqtt
 import requests
 import json
@@ -5,7 +7,7 @@ import time
 from ocr_space import ocr_space_file
 import re
 
-print("Starting up")
+print("Dependencies imported")
 
 CONFIG_PATH = "/data/options.json"
 
@@ -97,7 +99,7 @@ def run():
     global prev
     global reading
     
-    print("Starting cycles")
+    print("Starting loop")
 
     while True:
         

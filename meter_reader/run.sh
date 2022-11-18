@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bashio
-set -e
+
+echo "Starting!!!"
 
 python3 app.py
 
