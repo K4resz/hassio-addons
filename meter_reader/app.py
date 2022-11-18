@@ -26,7 +26,7 @@ mr_lastread.close()
 # =================================
 
 f = open(f"{FOLDER_PATH}/mr_lastread.txt")
-lastread = int(f.read())
+lastread = f.read()
 f.close()
 
 # check/udate last reading in file
@@ -130,7 +130,7 @@ def run():
 
     while True:
         
-        mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
+        mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "w")
         mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
         
         print(time.ctime())
