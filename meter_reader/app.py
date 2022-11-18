@@ -14,9 +14,9 @@ config_json = json.loads(open(CONFIG_PATH).read())
 print("Config loaded")
 
 IMAGE_PATH = config_json['image_path']
-baseline = float(config_json["initial"])
-base_low = baseline - float(config_json["max_decrease"])
-base_up  = baseline + float(config_json["max_increase"])
+baseline = int(config_json["initial"])
+base_low = baseline - int(config_json["max_decrease"])
+base_up  = baseline + int(config_json["max_increase"])
 
 prev = baseline
 reading = ""
@@ -41,20 +41,20 @@ def classify(path_to_image, base_low, baseline, base_up):
 
     print("Post-processing response...")
     parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
-    # processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
-    processed = re.sub(r"( )", "", parsedText)[:8]
+    processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
+    # processed = re.sub(r"( )", "", parsedText)[:8]
 
     print(f"Recognised digits: {processed}")
 
     s = ""
     for digit in processed:
         try:
-            float(digit)
+            int(digit)
             s += digit
         except ValueError:
             s += "0"
 
-    value = float(0 if s == "" else s)
+    value = int(0 if s == "" else s)
     if (base_low <= value and value <= base_up):
         prev = reading
         reading = s
@@ -112,15 +112,15 @@ def run():
 
         if reading != "":
             print("✔️✔️✔️ Reading OK! ✔️✔️✔️")
-            baseline = float(reading)
-            base_low = baseline - float(config_json["max_decrease"])
-            base_up  = baseline + float(config_json["max_increase"])
+            baseline = int(reading)
+            base_low = baseline - int(config_json["max_decrease"])
+            base_up  = baseline + int(config_json["max_increase"])
             publish_mqtt(client, reading)
             publish_low_high_mqtt(client, base_low, base_up)
         else:
             error("!!! Reading COMPROMISED! !!!")
-            base_low = base_low - float(config_json["max_decrease"])
-            base_up  = base_up + float(config_json["max_increase"])
+            base_low = base_low - int(config_json["max_decrease"])
+            base_up  = base_up + int(config_json["max_increase"])
             publish_low_high_mqtt(client, base_low, base_up)
 
         print("Closing MQTT connection...")
