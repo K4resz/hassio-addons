@@ -21,7 +21,7 @@ mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
 mr_logs.close()
 mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
 mr_readings.close()
-mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "w")
+mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "a")
 mr_lastread.close()
 # =================================
 
