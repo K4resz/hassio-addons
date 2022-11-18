@@ -1,11 +1,10 @@
-print("Starting up...")
-
 import paho.mqtt.client as mqtt
 import requests
 import json
 import time
 from ocr_space import ocr_space_file
 import re
+from pathlib import Path
 
 print("Dependencies imported")
 
@@ -25,6 +24,21 @@ reading = ""
 
 print("Variables initial setup done")
 
+# creating/opening log files
+# =================================
+mr_logs = Path("/config/www/meterreader/mr_logs.txt")
+mr_logs.touch(exist_ok=True) 
+f1 = open(mr_logs, 'a')
+
+mr_readings = Path("/config/www/meterreader/mr_readings.txt")
+mr_readings.touch(exist_ok=True) 
+f2 = open(mr_readings, 'a')
+
+mr_lastread = Path("/config/www/meterreader/mr_lastread.txt")
+mr_lastread.touch(exist_ok=True) 
+f3 = open(mr_lastread, 'w')
+# =================================
+
 def error(msg):
     print(f"#### ERROR: {msg} ####")
 
@@ -41,13 +55,17 @@ def classify(path_to_image, base_low, baseline, base_up):
     print("Model response received.")
     print(f"Response: {response}")
 
+    # postprocessing reading to remove spaces/dots/commas
+    # =================================
     print("Post-processing response...")
     parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
     processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
     # processed = re.sub(r"( )", "", parsedText)[:8]
-
+    
     print(f"Recognised digits: {processed}")
 
+    # validate reading
+    # =================================
     s = ""
     for digit in processed:
         try:
@@ -56,6 +74,8 @@ def classify(path_to_image, base_low, baseline, base_up):
         except ValueError:
             s += "0"
 
+    # check if reading is inside the expected range
+    # =================================
     value = int(0 if s == "" else s)
     if (base_low <= value and value <= base_up):
         prev = reading
@@ -104,23 +124,33 @@ def run():
     while True:
         
         print(time.ctime())
+        mr_logs.write(time.ctime())
+        mr_readings.write(time.ctime())
         print('Classifying image...')
         reading = classify(IMAGE_PATH, base_low, baseline, base_up)
         print("Classification done.")
+        mr_logs.write("Classification done.")
 
         print("Connecting to MQTT...")
         client = connect()
         print("MQTT connected successfully.")
+        mr_logs.write("MQTT connected successfully.")
 
         if reading != "":
             print("✔️✔️✔️ Reading OK! ✔️✔️✔️")
+            mr_logs.write("Reading OK!")
             baseline = int(reading)
             base_low = baseline - int(config_json["max_decrease"])
             base_up  = baseline + int(config_json["max_increase"])
+            mr_logs.write(f"Reading: {reading}")
+            mr_readings.write(f"Reading: {reading}")
+            mr_lastread.write(f"Reading: {reading}")
             publish_mqtt(client, reading)
             publish_low_high_mqtt(client, base_low, base_up)
+            mr_logs.write("MQTT Publish OK!")
         else:
             error("!!! Reading COMPROMISED! !!!")
+            mr_logs.write("!!! Reading COMPROMISED! !!!")
             base_low = base_low - int(config_json["max_decrease"])
             base_up  = base_up + int(config_json["max_increase"])
             publish_low_high_mqtt(client, base_low, base_up)
@@ -128,6 +158,8 @@ def run():
         print("Closing MQTT connection...")
         client.disconnect()
         print("MQTT disconnected successfully.")
+        mr_logs.write("MQTT disconnected successfully.")
+        
 
         time.sleep(int(config_json["upd_interval"]))
 
