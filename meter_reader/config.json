@@ -1,6 +1,6 @@
 {
     "name": "Meter reader",
-    "version": "0.3",
+    "version": "0.4.b1",
     "slug": "meterreader",
     "homeassistant_api": "no",
     "description": "Classify utility meter image with an online OCR api and push the reading over mqtt",
@@ -19,7 +19,8 @@
     ],
     "options": {
         "upd_interval": 1800, 
-        "image_path": "/config/www/meterreader/meter_latest.jpg", 
+        "folder_path": "/config/www/meterreader", 
+        "image_title": "meter_latest.jpg", 
         "initial": null, 
         "max_increase": 1, 
         "max_decrease": 0,
@@ -33,7 +34,8 @@
     },
     "schema": { 
         "upd_interval": "int", 
-        "image_path": "str", 
+        "folder_path": "str", 
+        "image_title": "str", 
         "initial": "int", 
         "max_increase": "int", 
         "max_decrease": "int",

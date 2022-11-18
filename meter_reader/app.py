@@ -6,33 +6,46 @@ from ocr_space import ocr_space_file
 import re
 from pathlib import Path
 
-print("Dependencies imported")
-
 CONFIG_PATH = "/data/options.json"
 
-config_json = json.loads(open(CONFIG_PATH).read())
+f = open(CONFIG_PATH)
+config_json = json.loads(f.read())
+f.close()
 
-print("Config loaded")
+FOLDER_PATH = config_json['folder_path']
+IMAGE_TITLE = config_json['image_title']
+IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
 
-IMAGE_PATH = config_json['image_path']
-baseline = int(config_json["initial"])
+# check/create log files
+# =================================
+mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
+mr_logs.close()
+mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
+mr_readings.close()
+mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "w")
+mr_lastread.close()
+# =================================
+
+f = open(f"{FOLDER_PATH}/mr_lastread.txt")
+lastread = int(f.read())
+f.close()
+
+# check/udate last reading in file
+# =================================
+lastvalue = int(0 if lastread == "" else lastread)
+if (lastvalue >= int(config_json["initial"])):
+    baseline = lastvalue
+else :
+    baseline = int(config_json["initial"])
+    mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "w")
+    mr_lastread.write(f"{baseline}")
+    mr_lastread.close()
+
 base_low = baseline - int(config_json["max_decrease"])
 base_up  = baseline + int(config_json["max_increase"])
 
 prev = baseline
 reading = ""
-
-print("Variables initial setup done")
-
-# check/create log files
-# =================================
-mr_logs = open("/config/www/meterreader/mr_logs.txt", "a")
-mr_logs.close()
-mr_readings = open("/config/www/meterreader/mr_readings.txt", "a")
-mr_readings.close()
-mr_lastread = open("/config/www/meterreader/mr_lastread.txt", "w")
-mr_lastread.close()
-# =================================
 
 def error(msg):
     print(f"#### ERROR: {msg} ####")
@@ -118,9 +131,9 @@ def run():
 
     while True:
         
-        mr_logs = open("/config/www/meterreader/mr_logs.txt", "a")
-        mr_readings = open("/config/www/meterreader/mr_readings.txt", "a")
-        mr_lastread = open("/config/www/meterreader/mr_lastread.txt", "w")
+        mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
+        mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
+        mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "w")
 
         print(time.ctime())
         mr_logs.write(f"{time.ctime()}\n")
@@ -141,7 +154,7 @@ def run():
             baseline = int(reading)
             base_low = baseline - int(config_json["max_decrease"])
             base_up  = baseline + int(config_json["max_increase"])
-            mr_logs.write(f"{reading}\n")
+            mr_logs.write(f"Reading: {reading}\n")
             mr_readings.write(f"  Reading: {reading}\n")
             mr_lastread.write(f"{reading}")
             publish_mqtt(client, reading)
@@ -150,7 +163,7 @@ def run():
         else:
             error("!!! Reading COMPROMISED! !!!")
             mr_logs.write("!!! Reading COMPROMISED! !!!")
-            mr_readings.write(f"  Reading: {reading}\n")
+            mr_readings.write(f"{reading}\n")
             base_low = base_low - int(config_json["max_decrease"])
             base_up  = base_up + int(config_json["max_increase"])
             publish_low_high_mqtt(client, base_low, base_up)

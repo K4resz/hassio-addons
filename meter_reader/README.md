@@ -20,9 +20,11 @@ https://www.home-assistant.io/integrations/sensor.mqtt/
 
 ### Reader
 
-upd_interval: value in seconds to be used as interval between data refreshes.
+upd_interval: value in seconds to be used as interval between data refreshes
 
-image_path: where to find the snapshot of your meter camera image
+folder_path: where to find the snapshot of your meter camera image, and log will be saved
+
+image_title: title of snapshot
 
 initial: initial/current reading of your meter
 
