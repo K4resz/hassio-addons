@@ -28,15 +28,18 @@ print("Variables initial setup done")
 # =================================
 mr_logs = Path("/config/www/meterreader/mr_logs.txt")
 mr_logs.touch(exist_ok=True) 
-f1 = open(mr_logs, 'a')
+f1 = open(mr_logs)
+mr_logs = open("/config/www/meterreader/mr_logs.txt", 'a')
 
 mr_readings = Path("/config/www/meterreader/mr_readings.txt")
 mr_readings.touch(exist_ok=True) 
-f2 = open(mr_readings, 'a')
+f2 = open(mr_readings)
+mr_readings = open("/config/www/meterreader/mr_readings.txt", 'a')
 
 mr_lastread = Path("/config/www/meterreader/mr_lastread.txt")
 mr_lastread.touch(exist_ok=True) 
-f3 = open(mr_lastread, 'w')
+f3 = open(mr_lastread)
+mr_lastread = open("/config/www/meterreader/mr_lastread.txt", 'w')
 # =================================
 
 def error(msg):
