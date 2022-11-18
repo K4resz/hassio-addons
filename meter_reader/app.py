@@ -24,22 +24,14 @@ reading = ""
 
 print("Variables initial setup done")
 
-# creating/opening log files
+# check/create log files
 # =================================
-mr_logs = Path("/config/www/meterreader/mr_logs.txt")
-mr_logs.touch(exist_ok=True) 
-f1 = open(mr_logs)
-mr_logs = open("/config/www/meterreader/mr_logs.txt", 'a')
-
-mr_readings = Path("/config/www/meterreader/mr_readings.txt")
-mr_readings.touch(exist_ok=True) 
-f2 = open(mr_readings)
-mr_readings = open("/config/www/meterreader/mr_readings.txt", 'a')
-
-mr_lastread = Path("/config/www/meterreader/mr_lastread.txt")
-mr_lastread.touch(exist_ok=True) 
-f3 = open(mr_lastread)
-mr_lastread = open("/config/www/meterreader/mr_lastread.txt", 'w')
+mr_logs = open("/config/www/meterreader/mr_logs.txt", "a")
+mr_logs.close()
+mr_readings = open("/config/www/meterreader/mr_readings.txt", "a")
+mr_readings.close()
+mr_lastread = open("/config/www/meterreader/mr_lastread.txt", "w")
+mr_lastread.close()
 # =================================
 
 def error(msg):
@@ -126,6 +118,10 @@ def run():
 
     while True:
         
+        mr_logs = open("/config/www/meterreader/mr_logs.txt", "a")
+        mr_readings = open("/config/www/meterreader/mr_readings.txt", "a")
+        mr_lastread = open("/config/www/meterreader/mr_lastread.txt", "w")
+
         print(time.ctime())
         mr_logs.write(time.ctime())
         mr_readings.write(time.ctime())
@@ -163,6 +159,9 @@ def run():
         print("MQTT disconnected successfully.")
         mr_logs.write("MQTT disconnected successfully.")
         
+        mr_logs.close()
+        mr_readings.close()
+        mr_lastread.close()
 
         time.sleep(int(config_json["upd_interval"]))
 
