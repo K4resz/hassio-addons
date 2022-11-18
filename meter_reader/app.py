@@ -4,7 +4,6 @@ import json
 import time
 from ocr_space import ocr_space_file
 import re
-from pathlib import Path
 
 CONFIG_PATH = "/data/options.json"
 
@@ -133,8 +132,7 @@ def run():
         
         mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
         mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
-        mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "w")
-
+        
         print(time.ctime())
         mr_logs.write(f"{time.ctime()}\n")
         mr_readings.write(time.ctime())
@@ -156,7 +154,9 @@ def run():
             base_up  = baseline + int(config_json["max_increase"])
             mr_logs.write(f"Reading: {reading}\n")
             mr_readings.write(f"  Reading: {reading}\n")
+            mr_lastread = open(f"{FOLDER_PATH}/mr_lastread.txt", "w")
             mr_lastread.write(f"{reading}")
+            mr_lastread.close()
             publish_mqtt(client, reading)
             publish_low_high_mqtt(client, base_low, base_up)
             mr_logs.write("MQTT Publish OK!")
@@ -175,7 +175,7 @@ def run():
         
         mr_logs.close()
         mr_readings.close()
-        mr_lastread.close()
+        
 
         time.sleep(int(config_json["upd_interval"]))
 
