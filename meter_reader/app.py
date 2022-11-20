@@ -91,8 +91,8 @@ def classify(path_to_image, base_low, baseline, base_up):
     else:
         error("Classification value is outside the acceptable (low-high) range.")
         print(base_low, value, base_up)
-        mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
-        mr_logs.write(f"Value: {value}\n")
+        # mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
+        # mr_logs.write(f"Value: {value}\n")
         # reading = prev
         return ""
 
