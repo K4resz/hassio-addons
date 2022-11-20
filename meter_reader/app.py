@@ -89,8 +89,10 @@ def classify(path_to_image, base_low, baseline, base_up):
         reading = s
         print(base_low, value, base_up)
     else:
-        error("Reading classification value is outside the acceptable (low-high) range.")
+        error("Classification value is outside the acceptable (low-high) range.")
         print(base_low, value, base_up)
+        mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
+        mr_logs.write(f"Value: {value}\n")
         # reading = prev
         return ""
 
@@ -133,6 +135,7 @@ def run():
         mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "w")
         mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
         
+        starttime = time.time()
         print(time.ctime())
         mr_logs.write(f"{time.ctime()}\n")
         mr_readings.write(time.ctime())
@@ -163,7 +166,7 @@ def run():
         else:
             error("!!! Reading COMPROMISED! !!!")
             mr_logs.write("!!! Reading COMPROMISED! !!!\n")
-            mr_logs.write(f"Reading: {reading}\n")
+            # mr_logs.write(f"Reading: {reading}\n")
             mr_readings.write(f"  Reading: {reading}\n")
             base_low = base_low - int(config_json["max_decrease"])
             base_up  = base_up + int(config_json["max_increase"])
@@ -177,8 +180,9 @@ def run():
         mr_logs.close()
         mr_readings.close()
         
-
-        time.sleep(int(config_json["upd_interval"]))
+        endtime = time.time()
+        timedelta = endtime - starttime
+        time.sleep(int(config_json["upd_interval"] - int(timedelta)))
 
 if __name__ == '__main__':
     run()
