@@ -138,7 +138,7 @@ def run():
         starttime = time.time()
         print(time.ctime())
         mr_logs.write(f"{time.ctime()}\n")
-        mr_readings.write(time.ctime())
+        mr_readings.write(f"{time.ctime()}")
         print('Classifying image...')
         reading = classify(IMAGE_PATH, base_low, baseline, base_up)
         print("Classification done.")
