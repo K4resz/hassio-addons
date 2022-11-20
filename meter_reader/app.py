@@ -180,9 +180,14 @@ def run():
         mr_logs.close()
         mr_readings.close()
         
+        # shorten sleeping time with the elapsed loop time
         endtime = time.time()
         timedelta = endtime - starttime
-        time.sleep(int(config_json["upd_interval"] - int(timedelta)))
+
+        if (int(timedelta) < int(config_json["upd_interval"])):
+            time.sleep(int(config_json["upd_interval"]) - int(timedelta))
+        else:
+            time.sleep(int(config_json["upd_interval"]))
 
 if __name__ == '__main__':
     run()
