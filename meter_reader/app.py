@@ -49,10 +49,11 @@ reading = ""
 def error(msg):
     print(f"#### ERROR: {msg} ####")
 
-def classify(path_to_image, base_low, baseline, base_up):
+def classify(path_to_image, base_low, baseline, base_up, log):
     print("Calling model...")
     
     global reading
+    mr_logs = log
     
     # model access can be replaced here
     # =================================
@@ -91,8 +92,8 @@ def classify(path_to_image, base_low, baseline, base_up):
     else:
         error("Classification value is outside the acceptable (low-high) range.")
         print(base_low, value, base_up)
-        # mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
-        # mr_logs.write(f"Value: {value}\n")
+        mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
+        mr_logs.write(f"Value: {value}\n")
         # reading = prev
         return ""
 
@@ -132,7 +133,7 @@ def run():
 
     while True:
         
-        mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "w")
+        mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
         mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
         
         starttime = time.time()
@@ -140,7 +141,7 @@ def run():
         mr_logs.write(f"{time.ctime()}\n")
         mr_readings.write(f"{time.ctime()}")
         print('Classifying image...')
-        reading = classify(IMAGE_PATH, base_low, baseline, base_up)
+        reading = classify(IMAGE_PATH, base_low, baseline, base_up, mr_logs)
         print("Classification done.")
         mr_logs.write("Classification done.\n")
 
