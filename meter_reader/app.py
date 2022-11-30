@@ -17,7 +17,7 @@ IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
 
 # check/create log files
 # =================================
-mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
+mr_logs = open(f"{FOLDER_PATH}/mr_logs_{time.strftime("%Y%m%d")}.txt", "a")
 mr_logs.close()
 mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
 mr_readings.close()
@@ -133,7 +133,7 @@ def run():
 
     while True:
         
-        mr_logs = open(f"{FOLDER_PATH}/mr_logs.txt", "a")
+        mr_logs = open(f"{FOLDER_PATH}/mr_logs_{time.strftime("%Y%m%d")}.txt", "a")
         mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
         
         starttime = time.time()
