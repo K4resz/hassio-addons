@@ -6,7 +6,6 @@ from ocr_space import ocr_space_file
 import re
 
 CONFIG_PATH = "/data/options.json"
-today = time.strftime("%Y%m%d")
 
 f = open(CONFIG_PATH)
 config_json = json.loads(f.read())
@@ -15,6 +14,7 @@ f.close()
 FOLDER_PATH = config_json['folder_path']
 IMAGE_TITLE = config_json['image_title']
 IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
+today = time.strftime("%Y%m%d")
 
 # check/create log files
 # =================================
@@ -129,7 +129,8 @@ def run():
     global base_up
     global prev
     global reading
-    global today
+    
+    today = time.strftime("%Y%m%d")
     
     print("Starting loop")
 
