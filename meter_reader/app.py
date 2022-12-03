@@ -65,9 +65,9 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     print(f"Response: {response}")
 
     processingError = json.loads(response)['IsErroredOnProcessing']
-    processingErrorMessage = json.loads(response)['ErrorMessage'][0]
 
     if (processingError == True):
+        processingErrorMessage = json.loads(response)['ErrorMessage'][0]
         error(f"Processing Error! {processingErrorMessage}")
         mr_logs.write(f"Processing Error! {processingErrorMessage}\n")
         return ""
