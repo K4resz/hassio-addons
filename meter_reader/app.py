@@ -64,39 +64,47 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     print("Model response received.")
     print(f"Response: {response}")
 
-    # postprocessing reading to remove spaces/dots/commas
-    # =================================
-    print("Post-processing response...")
-    parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
-    processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
-    # processed = re.sub(r"( )", "", parsedText)[:8]
-    
-    print(f"Recognised digits: {processed}")
+    processingError = json.loads(response)['IsErroredOnProcessing']
+    processingErrorMessage = json.loads(response)['ErrorMessage'][0]
 
-    # validate reading
-    # =================================
-    s = ""
-    for digit in processed:
-        try:
-            int(digit)
-            s += digit
-        except ValueError:
-            s += "0"
-
-    # check if reading is inside the expected range
-    # =================================
-    value = int(0 if s == "" else s)
-    if (base_low <= value and value <= base_up):
-        prev = reading
-        reading = s
-        print(base_low, value, base_up)
-    else:
-        error("Classification value is outside the acceptable (low-high) range.")
-        print(base_low, value, base_up)
-        mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
-        mr_logs.write(f"Value: {value}\n")
-        # reading = prev
+    if (processingError == True):
+        error(f"Processing Error! {processingErrorMessage}")
+        mr_logs.write(f"Processing Error! {processingErrorMessage}\n")
         return ""
+    else:
+        # postprocessing reading to remove spaces/dots/commas
+        # =================================
+        print("Post-processing response...")
+        parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
+        processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
+        # processed = re.sub(r"( )", "", parsedText)[:8]
+        
+        print(f"Recognised digits: {processed}")
+
+        # validate reading
+        # =================================
+        s = ""
+        for digit in processed:
+            try:
+                int(digit)
+                s += digit
+            except ValueError:
+                s += "0"
+
+        # check if reading is inside the expected range
+        # =================================
+        value = int(0 if s == "" else s)
+        if (base_low <= value and value <= base_up):
+            prev = reading
+            reading = s
+            print(base_low, value, base_up)
+        else:
+            error("Classification value is outside the acceptable (low-high) range.")
+            print(base_low, value, base_up)
+            mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
+            mr_logs.write(f"Value: {value}\n")
+            # reading = prev
+            return ""
 
     print(f"Reading: {reading}")
     return reading
@@ -129,18 +137,17 @@ def run():
     global base_up
     global prev
     global reading
-    
-    today = time.strftime("%Y%m%d")
-    
+          
     print("Starting loop")
 
     while True:
         
+        starttime = time.time()
+        today = time.strftime("%Y%m%d")
         mr_logs = open(f"{FOLDER_PATH}/mr_logs_{today}.txt", "a")
         mr_readings = open(f"{FOLDER_PATH}/mr_readings.txt", "a")
-        
-        starttime = time.time()
-        print(time.ctime())
+
+        print(time.ctime())        
         mr_logs.write(f"{time.ctime()}\n")
         mr_readings.write(f"{time.ctime()}")
         print('Classifying image...')
