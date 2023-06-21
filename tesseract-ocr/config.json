@@ -1,0 +1,31 @@
+{
+    "name": "tesseract ocr",
+    "version": "1.0.1",
+    "slug": "tesseract_ocr",
+    "homeassistant_api": "no",
+    "description": "Tesseract OCR 4 Runtime Environment for HA",
+    "url": "https://github.com/tesseract-shadow/tesseract-ocr-re",
+    "startup": "application",
+    "services": [
+        
+    ],
+    "boot": "auto",
+    "arch": [
+        "aarch64", 
+        "amd64",
+        "armhf", 
+        "armv7", 
+        "i386"
+    ],
+    "options": {
+        
+    },
+    "schema": { 
+        
+    },
+    "map": [
+        "config:rw",
+        "media:rw",
+        "share:rw"
+    ]
+}
