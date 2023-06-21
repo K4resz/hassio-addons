@@ -36,7 +36,7 @@ max_decrease: maximum expected decrease during the reading period
 
 ocr_api_key: see https://ocr.space/OCRAPI on how to get free API token
 
-ocr_engine: see https://ocr.space/OCRAPI for available engines, default is OCR Engine5
+ocr_engine: see https://ocr.space/OCRAPI for available engines, default is OCR Engine2
 
 ### MQTT
 
