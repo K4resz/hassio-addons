@@ -7,7 +7,7 @@ load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
 
-def ocr_space_file(filename, overlay=False, api_key=API_KEY, language='eng', ocr_engine=5):
+def ocr_space_file(filename, overlay=False, api_key=API_KEY, language='eng', ocr_engine=2):
     """ OCR.space API request with local file.
         Python3.5 - not tested on 2.7
     :param filename: Your file path & name.
