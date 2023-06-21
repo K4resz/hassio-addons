@@ -25,7 +25,7 @@
         "max_increase": 1, 
         "max_decrease": 0,
         "ocr_api_key": null, 
-        "ocr_engine": 5, 
+        "ocr_engine": 2, 
         "mqtt_host": "192.168.x.x", 
         "mqtt_port": 1883, 
         "mqtt_user": null, 
