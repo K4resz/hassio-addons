@@ -4,6 +4,8 @@ import json
 import time
 from ocr_space import ocr_space_file
 import re
+import pytesseract
+from PIL import Image
 
 CONFIG_PATH = "/data/options.json"
 
@@ -14,6 +16,7 @@ f.close()
 FOLDER_PATH = config_json['folder_path']
 IMAGE_TITLE = config_json['image_title']
 IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
+IMG = Image.open(IMAGE_PATH)
 today = time.strftime("%Y%m%d")
 
 # check/create log files
@@ -58,53 +61,67 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     
     # model access can be replaced here
     # =================================
-    response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang'], ocr_engine=config_json['ocr_engine'])
+    ocr_result = pytesseract.image_to_string(IMG)
+    response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang1'], ocr_engine=config_json['ocr_engine'])
+    respContr = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
     # =================================
 
     print("Model response received.")
-    print(f"Response: {response}")
+    print(f"Response from TesseractOCR: {ocr_result}")
+    print(f"Response from Ocr.Space: {response}")
+    print(f"Response (control): {respContr}")
+    
 
     processingError = json.loads(response)['IsErroredOnProcessing']
+    processingErrorContr = json.loads(respContr)['IsErroredOnProcessing']
 
-    if (processingError == True):
-        processingErrorMessage = json.loads(response)['ErrorMessage'][0]
+    if (processingError == True | processingErrorContr == True):
+        if (processingError == True):
+            processingErrorMessage = json.loads(response)['ErrorMessage'][0]
+        else:
+            processingErrorMessage = json.loads(respContr)['ErrorMessage'][0]
         error(f"Processing Error! {processingErrorMessage}")
         mr_logs.write(f"Processing Error! {processingErrorMessage}\n")
         return ""
     else:
-        # postprocessing reading to remove spaces/dots/commas
+        # postprocessing reading to remove spaces/dots/commas/dashes/new lines
         # =================================
         print("Post-processing response...")
         parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
-        processed = re.sub(r"( |,|\.)", "", parsedText)[:8]
-        # processed = re.sub(r"( )", "", parsedText)[:8]
+        processed = re.sub(r"( |,|\.|-|_|\n)", "", parsedText)[:8]
+        parsedContr = json.loads(respContr)['ParsedResultsContr'][0]['ParsedTextContr']
+        processedContr = re.sub(r"( |,|\.|-|_|\n)", "", parsedContr)[:8]
         
-        print(f"Recognised digits: {processed}")
-
-        # validate reading
-        # =================================
-        s = ""
-        for digit in processed:
-            try:
-                int(digit)
-                s += digit
-            except ValueError:
-                s += "0"
-
-        # check if reading is inside the expected range
-        # =================================
-        value = int(0 if s == "" else s)
-        if (base_low <= value and value <= base_up):
-            prev = reading
-            reading = s
-            print(base_low, value, base_up)
-        else:
-            error("Classification value is outside the acceptable (low-high) range.")
-            print(base_low, value, base_up)
-            mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
-            mr_logs.write(f"Value: {value}\n")
-            # reading = prev
+        if (parsedText != parsedContr):
+            error(f"Postprocessing Error! Control reading does not match! {processed} : {processedContr}")
             return ""
+        else:
+            print(f"Recognised digits: {processed}")
+
+            # validate reading
+            # =================================
+            s = ""
+            for digit in processed:
+                try:
+                    int(digit)
+                    s += digit
+                except ValueError:
+                    s += "0"
+
+            # check if reading is inside the expected range
+            # =================================
+            value = int(0 if s == "" else s)
+            if (base_low <= value and value <= base_up):
+                prev = reading
+                reading = s
+                print(base_low, value, base_up)
+            else:
+                error("Classification value is outside the acceptable (low-high) range.")
+                print(base_low, value, base_up)
+                mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
+                mr_logs.write(f"Value: {value}\n")
+                # reading = prev
+                return ""
 
     print(f"Reading: {reading}")
     return reading
