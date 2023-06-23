@@ -7,6 +7,8 @@ import re
 import pytesseract
 from PIL import Image
 
+pytesseract.pytesseract.tesseract_cmd = r'/home/work'
+
 CONFIG_PATH = "/data/options.json"
 
 f = open(CONFIG_PATH)
@@ -16,7 +18,6 @@ f.close()
 FOLDER_PATH = config_json['folder_path']
 IMAGE_TITLE = config_json['image_title']
 IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
-IMG = Image.open(IMAGE_PATH)
 today = time.strftime("%Y%m%d")
 
 # check/create log files
@@ -61,7 +62,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     
     # model access can be replaced here
     # =================================
-    ocr_result = pytesseract.image_to_string(IMG)
+    ocr_result = pytesseract.image_to_string(Image.open(IMAGE_PATH))
     response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang1'], ocr_engine=config_json['ocr_engine'])
     respContr = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
     # =================================
