@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import requests
+import os
 import json
 import time
 from ocr_space import ocr_space_file
@@ -16,6 +17,7 @@ f = open(CONFIG_PATH)
 config_json = json.loads(f.read())
 f.close()
 
+UPLOAD_FOLDER = './static/uploads'
 FOLDER_PATH = config_json['folder_path']
 IMAGE_TITLE = config_json['image_title']
 IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
@@ -61,12 +63,29 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     global reading
     mr_logs = log
     
+    # preprocessing image
+    # =================================
+    # load the image and convert it to grayscale
+    img = cv2.imread(IMAGE_PATH)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # apply thresholding to preprocess the image
+    gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    # apply median blurring to remove any blurring
+    gray = cv2.medianBlur(gray, 3)
+    # save the processed image in the /static/uploads directory
+    ofilename = os.path.join(app.config['UPLOAD_FOLDER'],"{}.png".format(os.getpid()))
+    cv2.imwrite(ofilename, gray)
+    
+
     # model access can be replaced here
     # =================================
-    ocr_result = pytesseract.image_to_string(Image.open(IMAGE_PATH))
+    ocr_result = pytesseract.image_to_string(Image.open(ofilename))
     response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang1'], ocr_engine=config_json['ocr_engine'])
     respContr = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
     # =================================
+
+    # remove the processed image
+    os.remove(ofilename)
 
     print("Model response received.")
     print(f"Response from TesseractOCR: {ocr_result}")
