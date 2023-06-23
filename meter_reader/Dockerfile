@@ -1,13 +1,4 @@
 ARG BUILD_FROM
-
-FROM ubuntu:18.04
-
-RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository -y ppa:alex-p/tesseract-ocr
-RUN apt-get update && apt-get install -y tesseract-ocr-all 
-
-RUN mkdir /home/work
-WORKDIR /home/work
-
 FROM ${BUILD_FROM}
 
 # Add env
@@ -26,7 +17,9 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-#RUN apt-get install python3 curl
+RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository -y ppa:alex-p/tesseract-ocr
+RUN apt-get update && apt-get install -y tesseract-ocr-all
+
 RUN apk add --no-cache curl
 RUN apk add --no-cache python3
 
@@ -36,8 +29,6 @@ RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
 RUN pip3 install numpy opencv-contrib-python
 RUN pip3 install pytesseract
-
-WORKDIR /
 
 # Copy data for add-on
 COPY ocr_space.py /
