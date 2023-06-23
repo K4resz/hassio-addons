@@ -60,6 +60,7 @@ def error(msg):
 def classify(path_to_image, base_low, baseline, base_up, log):
     print("Calling model...")
     
+    global ocr_result
     global reading
     mr_logs = log
     
@@ -73,7 +74,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # apply median blurring to remove any blurring
     gray = cv2.medianBlur(gray, 3)
     # save the processed image in the /static/uploads directory
-    ofilename = os.path.join(app.config['UPLOAD_FOLDER'],"{}.png".format(os.getpid()))
+    ofilename = os.path.join("UPLOAD_FOLDER","{}.png".format(os.getpid()))
     cv2.imwrite(ofilename, gray)
     
 
@@ -175,6 +176,7 @@ def run():
     global base_up
     global prev
     global reading
+    global ocr_result
           
     print("Starting loop")
 
@@ -192,6 +194,7 @@ def run():
         reading = classify(IMAGE_PATH, base_low, baseline, base_up, mr_logs)
         print("Classification done.")
         mr_logs.write("Classification done.\n")
+        mr_logs.write(f"Tesseract OCR reading: {ocr_result}\n")
 
         print("Connecting to MQTT...")
         client = connect()
