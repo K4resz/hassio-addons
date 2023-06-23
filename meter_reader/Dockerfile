@@ -1,13 +1,5 @@
 ARG BUILD_FROM
 
-# Add env
-ENV LANG C.UTF-8
-
-ARG BUILD_ARCH
-ARG BUILD_DATE
-ARG BUILD_REF
-ARG BUILD_VERSION
-
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository -y ppa:alex-p/tesseract-ocr
@@ -17,6 +9,14 @@ RUN mkdir /home/work
 WORKDIR /home/work
 
 FROM ${BUILD_FROM}
+
+# Add env
+ENV LANG C.UTF-8
+
+ARG BUILD_ARCH
+ARG BUILD_DATE
+ARG BUILD_REF
+ARG BUILD_VERSION
 
 LABEL \
     io.hass.arch="${BUILD_ARCH}" \
