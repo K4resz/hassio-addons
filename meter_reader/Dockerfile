@@ -1,5 +1,5 @@
 #ARG BUILD_FROM
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:latest
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:7.0.0
 
 #FROM ubuntu:18.04
 FROM ${BUILD_FROM}

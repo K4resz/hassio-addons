@@ -1,6 +1,6 @@
 {
     "name": "Meter reader",
-    "version": "0.6.4 b1",
+    "version": "0.6.4 b2",
     "slug": "meterreader",
     "homeassistant_api": "no",
     "description": "Classify utility meter image with an online OCR api and push the reading over mqtt",
