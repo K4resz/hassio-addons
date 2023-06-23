@@ -12,18 +12,18 @@ WORKDIR /home/work
 # Add env
 ENV LANG C.UTF-8
 
-# ARG BUILD_ARCH
-# ARG BUILD_DATE
-# ARG BUILD_REF
-# ARG BUILD_VERSION
+ARG BUILD_ARCH
+ARG BUILD_DATE
+ARG BUILD_REF
+ARG BUILD_VERSION
 
-# LABEL \
-#     io.hass.arch="${BUILD_ARCH}" \
-#     #io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
-#     io.hass.type="addon" \
-#     io.hass.version=${BUILD_VERSION} \
-#     org.label-schema.build-date=${BUILD_DATE} \
-#     org.label-schema.vcs-ref=${BUILD_REF}
+LABEL \
+    #io.hass.arch="${BUILD_ARCH}" \
+    io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
+    io.hass.type="addon" \
+    io.hass.version=${BUILD_VERSION} \
+    org.label-schema.build-date=${BUILD_DATE} \
+    org.label-schema.vcs-ref=${BUILD_REF}
 
 RUN apt-get install python3 curl
 #RUN apk add --no-cache curl
