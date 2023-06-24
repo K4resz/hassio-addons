@@ -19,8 +19,8 @@ ARG BUILD_REF
 ARG BUILD_VERSION
 
 LABEL \
-    #io.hass.arch="${BUILD_ARCH}" \
-    io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
+    io.hass.arch="${BUILD_ARCH}" \
+    # io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
     io.hass.type="addon" \
     io.hass.version=${BUILD_VERSION} \
     org.label-schema.build-date=${BUILD_DATE} \
@@ -36,7 +36,7 @@ RUN pip3 install python-dotenv
 RUN pip3 install numpy opencv-contrib-python
 RUN pip3 install pytesseract
 
-WORKDIR /
+# WORKDIR /
 
 # Copy data for add-on
 COPY ocr_space.py /
