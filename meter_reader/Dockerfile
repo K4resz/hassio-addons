@@ -33,8 +33,9 @@ RUN apk add --no-cache python3
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
-# RUN pip3 install numpy opencv-python-headless
-# RUN pip3 install pytesseract
+RUN pip3 install numpy 
+RUN pip3 install opencv-contrib-python-headless
+RUN pip3 install pytesseract
 
 WORKDIR /
 
