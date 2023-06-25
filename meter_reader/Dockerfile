@@ -1,6 +1,6 @@
 ARG BUILD_FROM
 # FROM ${BUILD_FROM}
-
+FROM ubuntu:18.04
 # Add env
 ENV LANG C.UTF-8
 
@@ -10,14 +10,12 @@ ARG BUILD_REF
 ARG BUILD_VERSION
 
 LABEL \
-    io.hass.arch="${BUILD_ARCH}" \
-    # io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
+    # io.hass.arch="${BUILD_ARCH}" \
+    io.hass.arch="armhf|armv7|aarch64|i386|amd64" \
     io.hass.type="addon" \
     io.hass.version=${BUILD_VERSION} \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
-
-FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository -y ppa:alex-p/tesseract-ocr
 # RUN apt-get update && apt-get install -y tesseract-ocr-all 
