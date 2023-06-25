@@ -9,7 +9,7 @@ import pytesseract
 from PIL import Image
 import cv2
 
-pytesseract.pytesseract.tesseract_cmd = r'/home/work'
+pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 CONFIG_PATH = "/data/options.json"
 
