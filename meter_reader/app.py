@@ -20,7 +20,8 @@ f.close()
 UPLOAD_FOLDER = './static/uploads'
 FOLDER_PATH = config_json['folder_path']
 IMAGE_TITLE = config_json['image_title']
-IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
+# IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
+IMAGE_PATH = os.path.join(FOLDER_PATH,IMAGE_TITLE)
 today = time.strftime("%Y%m%d")
 
 # check/create log files
@@ -74,22 +75,24 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # apply median blurring to remove any blurring
     gray = cv2.medianBlur(gray, 3)
     # save the processed image in the /static/uploads directory
-    ofilename = os.path.join("UPLOAD_FOLDER","{}.png".format(os.getpid()))
-    cv2.imwrite(ofilename, gray)
+    ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
+    prepimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
+    cv2.imwrite(ocrimgpath, gray)
+    cv2.imwrite(prepimgpath, gray)
     
 
     # model access can be replaced here
     # =================================
-    ocr_result = pytesseract.image_to_string(Image.open(ofilename))
+    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath))
     response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang1'], ocr_engine=config_json['ocr_engine'])
-    respContr = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
+    respContr = ocr_space_file(filename=ocrimgpath, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
     # =================================
 
     # remove the processed image
-    os.remove(ofilename)
+    os.remove(ocrimgpath)
 
     print("Model response received.")
-    print(f"Response from TesseractOCR: {ocr_result}")
+    print(f"Response from TesseractOCR: {ocrResult}")
     print(f"Response from Ocr.Space: {response}")
     print(f"Response (control): {respContr}")
     
