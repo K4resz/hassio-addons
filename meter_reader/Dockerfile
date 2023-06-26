@@ -23,17 +23,10 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 # WORKDIR /usr/bin
-COPY --from=ubuntu /usr/bin /usr/bin/
-COPY --from=ubuntu /usr/share /usr/share/
-COPY --from=ubuntu /usr/lib /usr/lib/
-COPY --from=ubuntu /var/lib /var/lib/
-COPY --from=ubuntu /var/cache /var/cache/
-
-WORKDIR /
+# WORKDIR /
 
 RUN apk add --no-cache curl
 RUN apk add --no-cache python3
-# RUN pip3 --no-cache-dir install --upgrade pip
 RUN cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
   && pip3 --no-cache-dir install --upgrade pip \
@@ -45,6 +38,12 @@ RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
 # RUN pip3 install opencv-python-headless
 RUN pip3 install pytesseract
+
+COPY --from=ubuntu /usr/bin /usr/bin/
+COPY --from=ubuntu /usr/share /usr/share/
+COPY --from=ubuntu /usr/lib /usr/lib/
+COPY --from=ubuntu /var/lib /var/lib/
+COPY --from=ubuntu /var/cache /var/cache/
 
 # Copy data for add-on
 COPY ocr_space.py /
