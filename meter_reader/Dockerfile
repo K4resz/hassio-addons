@@ -38,7 +38,7 @@ RUN cd /usr/local/bin \
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
-# RUN pip3 install opencv-contrib-python-headless
+RUN pip3 install opencv-contrib-python-headless
 RUN pip3 install pytesseract
 
 # Copy data for add-on
