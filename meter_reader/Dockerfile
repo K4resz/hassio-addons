@@ -1,6 +1,14 @@
 ARG BUILD_FROM
-# FROM ${BUILD_FROM}
+
 FROM ubuntu:18.04
+
+RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository -y ppa:alex-p/tesseract-ocr
+RUN apt-get update && apt-get install -y tesseract-ocr-all 
+
+RUN mkdir /home/work
+# WORKDIR /home/work
+
+FROM ${BUILD_FROM}
 # Add env
 ENV LANG C.UTF-8
 
@@ -17,28 +25,31 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository -y ppa:alex-p/tesseract-ocr
-# RUN apt-get update && apt-get install -y tesseract-ocr-all 
-RUN apt-get update \
-  && apt-get install -y tesseract-ocr-all \
-  && apt-get install -y curl python3 python3-distutils python3-pip \
-  && cd /usr/local/bin \
+
+# RUN apt-get update \
+#   && apt-get install -y tesseract-ocr-all \
+#   && apt-get install -y curl python3 python3-distutils python3-pip \
+#   && cd /usr/local/bin \
+#   && ln -s /usr/bin/python3 python \
+#   && pip3 --no-cache-dir install --upgrade pip \
+#   && rm -rf /var/lib/apt/lists/*
+
+RUN apk add --no-cache curl
+RUN apk add --no-cache python3
+
+RUN cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
   && pip3 --no-cache-dir install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*
-
-# RUN apk add --no-cache curl
-# RUN apk add --no-cache python3
 
 # install .py script dependency
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
-# RUN pip3 install opencv-contrib-python-headless
+RUN pip3 install opencv-contrib-python-headless
 RUN pip3 install pytesseract
 
-RUN mkdir /home/work
-WORKDIR /home/work
+
 
 WORKDIR /
 
