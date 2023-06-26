@@ -25,8 +25,7 @@ RUN apt-get update \
   && cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
   && pip3 --no-cache-dir install --upgrade pip \
-  && rm -rf /var/lib/apt/lists/* \
-  && cd /
+  && rm -rf /var/lib/apt/lists/*
 
 # RUN apk add --no-cache curl
 # RUN apk add --no-cache python3
@@ -40,7 +39,7 @@ RUN pip3 install pytesseract
 
 RUN mkdir /home/work
 # WORKDIR /home/work
-# WORKDIR /
+WORKDIR /
 
 # Copy data for add-on
 COPY ocr_space.py /
