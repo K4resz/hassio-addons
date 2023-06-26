@@ -23,7 +23,7 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 # WORKDIR /usr/bin
-# WORKDIR /
+
 
 RUN apk add --no-cache curl
 RUN apk add --no-cache python3
@@ -44,6 +44,8 @@ COPY --from=ubuntu /usr/share /usr/share/
 COPY --from=ubuntu /usr/lib /usr/lib/
 COPY --from=ubuntu /var/lib /var/lib/
 COPY --from=ubuntu /var/cache /var/cache/
+
+WORKDIR /
 
 # Copy data for add-on
 COPY ocr_space.py /
