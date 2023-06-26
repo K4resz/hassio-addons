@@ -22,10 +22,10 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-WORKDIR /usr/bin
-COPY --from=ubuntu /usr/bin/tesseract
+# WORKDIR /usr/bin
+COPY --from=ubuntu /usr/bin/tesseract /usr/bin
 
-WORKDIR /
+# WORKDIR /
 
 RUN apk add --no-cache curl
 RUN apk add --no-cache python3
