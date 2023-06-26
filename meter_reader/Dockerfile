@@ -29,6 +29,10 @@ COPY --from=ubuntu /usr/bin/tesseract /usr/bin
 
 RUN apk add --no-cache curl
 RUN apk add --no-cache python3
+RUN cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 --no-cache-dir install --upgrade pip \
+  && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
 RUN pip3 install requests
