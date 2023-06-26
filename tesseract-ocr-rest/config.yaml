@@ -1,0 +1,5 @@
+name: "Tesseract OCR"
+description: "Exposes Tesseract OCR calls over http as REST."
+version: "0.1.0_b1"
+slug: "tesseract_rest"
+init: false
