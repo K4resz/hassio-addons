@@ -23,7 +23,11 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 # WORKDIR /usr/bin
-COPY --from=ubuntu /usr/bin/tesseract /usr/bin
+COPY --from=ubuntu /usr/bin /usr/bin/
+COPY --from=ubuntu /usr/share /usr/share/
+COPY --from=ubuntu /usr/lib /usr/lib/
+COPY --from=ubuntu /var/lib /var/lib/
+COPY --from=ubuntu /var/cache /var/cache/
 
 # WORKDIR /
 
@@ -38,7 +42,7 @@ RUN cd /usr/local/bin \
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
-# RUN pip3 install opencv-contrib-python-headless
+# RUN pip3 install opencv-python-headless
 RUN pip3 install pytesseract
 
 # Copy data for add-on
