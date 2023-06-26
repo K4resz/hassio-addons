@@ -29,15 +29,15 @@ COPY --from=ubuntu /usr/lib /usr/lib/
 COPY --from=ubuntu /var/lib /var/lib/
 COPY --from=ubuntu /var/cache /var/cache/
 
-# WORKDIR /
+WORKDIR /
 
 RUN apk add --no-cache curl
 RUN apk add --no-cache python3
-RUN pip3 --no-cache-dir install --upgrade pip
-# RUN cd /usr/local/bin \
-#   && ln -s /usr/bin/python3 python \
-#   && pip3 --no-cache-dir install --upgrade pip \
-#   && rm -rf /var/lib/apt/lists/*
+# RUN pip3 --no-cache-dir install --upgrade pip
+RUN cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 --no-cache-dir install --upgrade pip \
+  && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
 RUN pip3 install requests
