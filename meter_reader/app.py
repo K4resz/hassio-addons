@@ -7,7 +7,7 @@ from ocr_space import ocr_space_file
 import re
 import pytesseract
 from PIL import Image
-import cv2
+# import cv2
 
 pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
@@ -67,20 +67,20 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     
     ocrimgpath = IMAGE_PATH
 
-    # preprocessing image
-    # =================================
-    # load the image and convert it to grayscale
-    img = cv2.imread(IMAGE_PATH)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # apply thresholding to preprocess the image
-    gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    # apply median blurring to remove any blurring
-    gray = cv2.medianBlur(gray, 3)
-    # save the processed image in the /static/uploads directory
-    ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
-    prepimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
-    cv2.imwrite(ocrimgpath, gray)
-    cv2.imwrite(prepimgpath, gray)
+    # # preprocessing image
+    # # =================================
+    # # load the image and convert it to grayscale
+    # img = cv2.imread(IMAGE_PATH)
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # # apply thresholding to preprocess the image
+    # gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    # # apply median blurring to remove any blurring
+    # gray = cv2.medianBlur(gray, 3)
+    # # save the processed image in the /static/uploads directory
+    # ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
+    # prepimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
+    # cv2.imwrite(ocrimgpath, gray)
+    # cv2.imwrite(prepimgpath, gray)
     
 
     # model access can be replaced here
@@ -91,7 +91,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # =================================
 
     # # remove the processed image
-    os.remove(ocrimgpath)
+    # os.remove(ocrimgpath)
 
     print("Model response received.")
     print(f"Response from TesseractOCR: {ocrResult}")
