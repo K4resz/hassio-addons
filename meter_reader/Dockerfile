@@ -20,15 +20,6 @@ LABEL \
 
 RUN apk update
 RUN apk add --no-cache curl python3 tesseract-ocr
-# RUN apk add --no-cache curl python3 automake autoconf ca-certificates g++ git libtool leptonica-dev make pkgconf sudo
-# RUN git clone https://github.com/tesseract-ocr/tesseract.git
-
-# RUN cd tesseract \
-#     && ./autogen.sh \
-#     && ./configure \
-#     && make \
-#     && sudo make install \
-#     && sudo ldconfig
 
 # RUN cd /usr/local/bin \
 #   && ln -s /usr/bin/python3 python \
@@ -36,11 +27,11 @@ RUN apk add --no-cache curl python3 tesseract-ocr
 #   && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
-RUN pip3 install requests
-RUN pip3 install paho-mqtt
-RUN pip3 install python-dotenv
-RUN pip3 install pytesseract
-RUN pip3 install opencv-contrib-python-headless
+RUN pip install requests
+RUN pip install paho-mqtt
+RUN pip install python-dotenv
+RUN pip install pytesseract
+RUN pip install opencv-contrib-python-headless
 
 # Copy data for add-on
 COPY ocr_space.py /
