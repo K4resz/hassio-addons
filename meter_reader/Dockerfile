@@ -30,8 +30,8 @@ RUN git clone https://github.com/tesseract-ocr/tesseract.git
 RUN cd tesseract \
     && ./autogen.sh \
     && ./configure \
-    && make \\
-    && make install \\
+    && make \
+    && make install \
     && ldconfig
 
 # install .py script dependency
