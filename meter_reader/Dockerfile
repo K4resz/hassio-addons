@@ -19,15 +19,15 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 RUN apk update
-RUN apk add --no-cache curl python3 automake autoconf ca-certificates g++ git libtool leptonica-dev make pkgconf 
+RUN apk add --no-cache curl python3 automake autoconf ca-certificates g++ git libtool leptonica-dev make pkgconf sudo
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
     && ./autogen.sh \
     && ./configure \
     && make \
-    && make install \
-    && ldconfig
+    && sudo make install \
+    && sudo ldconfig
 
 # RUN cd /usr/local/bin \
 #   && ln -s /usr/bin/python3 python \
