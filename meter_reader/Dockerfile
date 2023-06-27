@@ -29,8 +29,6 @@ RUN cd tesseract \
     && make install \
     && ldconfig
 
-# RUN apk add --no-cache curl
-# RUN apk add --no-cache python3
 # RUN cd /usr/local/bin \
 #   && ln -s /usr/bin/python3 python \
 #   && pip3 --no-cache-dir install --upgrade pip \
