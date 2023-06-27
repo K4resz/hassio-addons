@@ -20,7 +20,7 @@ LABEL \
 # RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing/ -u alpine-keys --allow-untrusted
 # RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/community -u alpine-keys --allow-untrusted
 # RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/main -u alpine-keys --allow-untrusted
-RUN apk add --allow-untrusted automake ca-certificates g++ git libtool libleptonica-dev make pkg-config 
+RUN apk add automake ca-certificates g++ git libtool libleptonica-dev make pkg-config 
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
