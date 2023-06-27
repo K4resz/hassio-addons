@@ -17,14 +17,7 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-RUN apk add --no-cache curl
-RUN apk add --no-cache python3
-RUN cd /usr/local/bin \
-  && ln -s /usr/bin/python3 python \
-  && pip3 --no-cache-dir install --upgrade pip \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y automake ca-certificates g++ git libtool make pkg-config
+RUN apt-get update && apt-get install -y automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
@@ -33,6 +26,13 @@ RUN cd tesseract \
     && make \
     && make install \
     && ldconfig
+
+RUN apk add --no-cache curl
+RUN apk add --no-cache python3
+RUN cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 --no-cache-dir install --upgrade pip \
+  && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
 RUN pip3 install requests
