@@ -17,10 +17,9 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-# RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing/ -u alpine-keys --allow-untrusted
-# RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/community -u alpine-keys --allow-untrusted
-# RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/main -u alpine-keys --allow-untrusted
-RUN apk add automake ca-certificates g++ git libtool libleptonica-dev make pkg-config 
+# RUN apk update && apk add automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
+RUN apk update && apk add --update alpine-sdk
+RUN apk add libleptonica-dev 
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
