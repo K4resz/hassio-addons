@@ -19,7 +19,9 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 RUN apk update
-RUN apk add --no-cache curl python3 tesseract-ocr
+RUN apk add --no-cache tesseract-ocr
+RUN apk add --no-cache curl 
+RUN apk add --no-cache python3 
 
 # RUN cd /usr/local/bin \
 #   && ln -s /usr/bin/python3 python \
@@ -27,11 +29,11 @@ RUN apk add --no-cache curl python3 tesseract-ocr
 #   && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
-RUN pip install requests
-RUN pip install paho-mqtt
-RUN pip install python-dotenv
-RUN pip install pytesseract
-RUN pip install opencv-contrib-python-headless
+RUN pip3 install requests
+RUN pip3 install paho-mqtt
+RUN pip3 install python-dotenv
+RUN pip3 install pytesseract
+RUN pip3 install opencv-contrib-python-headless
 
 # Copy data for add-on
 COPY ocr_space.py /
