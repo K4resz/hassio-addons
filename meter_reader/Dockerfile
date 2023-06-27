@@ -17,6 +17,7 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
+RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/v3.16/main -u alpine-keys
 RUN apk update && apk add --no-cache automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
