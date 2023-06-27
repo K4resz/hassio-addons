@@ -19,7 +19,7 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 RUN apk update
-RUN apk add --no-cache curl python3 automake ca-certificates g++ git libtool leptonica-dev make pkgconf 
+RUN apk add --no-cache curl python3 automake autom4te ca-certificates g++ git libtool leptonica-dev make pkgconf 
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
