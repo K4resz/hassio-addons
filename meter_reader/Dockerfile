@@ -24,10 +24,21 @@ RUN cd /usr/local/bin \
   && pip3 --no-cache-dir install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && install -y automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
+RUN git clone https://github.com/tesseract-ocr/tesseract.git
+
+RUN cd tesseract \
+    && ./autogen.sh \
+    && ./configure \
+    && make \\
+    && make install \\
+    && ldconfig
+
 # install .py script dependency
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
+RUN pip3 install pytesseract
 
 # Copy data for add-on
 COPY ocr_space.py /
