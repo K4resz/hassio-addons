@@ -17,7 +17,7 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-
+RUN apk add --no-cache musl=1.1.24-r2
 RUN apk add --no-cache curl python3 automake ca-certificates g++ git libtool leptonica-dev make pkgconf 
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
