@@ -1,5 +1,6 @@
 ARG BUILD_FROM
-FROM ${BUILD_FROM}
+# FROM ${BUILD_FROM}
+FROM alpine:latest
 
 # Add env
 ENV LANG C.UTF-8
