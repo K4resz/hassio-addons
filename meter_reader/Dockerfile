@@ -17,7 +17,7 @@ LABEL \
     org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF}
 
-RUN apt-get update && apt-get install -y automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
+RUN apk add --no-cache automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
