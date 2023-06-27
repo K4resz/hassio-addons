@@ -24,7 +24,7 @@ RUN cd /usr/local/bin \
   && pip3 --no-cache-dir install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
+RUN apt-get update && apt-get install -y automake ca-certificates g++ git libtool make pkg-config
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
 RUN cd tesseract \
