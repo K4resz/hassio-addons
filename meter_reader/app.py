@@ -7,7 +7,7 @@ from ocr_space import ocr_space_file
 import re
 import pytesseract
 from PIL import Image
-import cv2
+# import cv2
 
 pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 

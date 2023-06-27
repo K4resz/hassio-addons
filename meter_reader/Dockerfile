@@ -36,6 +36,7 @@ RUN apk add --no-cache py3-pip
 #   && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
+RUN pip3 install --upgrade pip
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
