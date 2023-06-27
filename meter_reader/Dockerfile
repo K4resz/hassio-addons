@@ -18,7 +18,7 @@ LABEL \
     org.label-schema.vcs-ref=${BUILD_REF}
 
 # RUN apk update && apk add automake ca-certificates g++ git libtool libleptonica-dev make pkg-config
-RUN apk update && apk add --update alpine-sdk
+RUN apk add --update alpine-sdk
 RUN apk add libleptonica-dev 
 RUN git clone https://github.com/tesseract-ocr/tesseract.git
 
