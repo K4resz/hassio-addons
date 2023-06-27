@@ -1,9 +1,9 @@
 {
     "name": "Meter reader",
-    "version": "0.6.0_b52",
+    "version": "0.6.0_b53",
     "slug": "meterreader",
     "homeassistant_api": "no",
-    "description": "Classify utility meter image with an online OCR api and push the reading over mqtt",
+    "description": "Classify utility meter image with a OpenCV and Tesseract OCR and push the reading over mqtt.",
     "url": "https://github.com/K4resz/ha-addons/tree/master/meter_reader",
     "startup": "application",
     "services": [

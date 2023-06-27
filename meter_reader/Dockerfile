@@ -29,18 +29,19 @@ RUN cd tesseract \
     && make install \
     && ldconfig
 
-RUN apk add --no-cache curl
-RUN apk add --no-cache python3
-RUN cd /usr/local/bin \
-  && ln -s /usr/bin/python3 python \
-  && pip3 --no-cache-dir install --upgrade pip \
-  && rm -rf /var/lib/apt/lists/*
+# RUN apk add --no-cache curl
+# RUN apk add --no-cache python3
+# RUN cd /usr/local/bin \
+#   && ln -s /usr/bin/python3 python \
+#   && pip3 --no-cache-dir install --upgrade pip \
+#   && rm -rf /var/lib/apt/lists/*
 
 # install .py script dependency
 RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
 RUN pip3 install pytesseract
+RUN pip3 install opencv-contrib-python-headless
 
 # Copy data for add-on
 COPY ocr_space.py /
