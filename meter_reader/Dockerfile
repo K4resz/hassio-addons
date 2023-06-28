@@ -26,7 +26,7 @@ RUN apk add --no-cache python3
 RUN apk add --no-cache py3-pip
 RUN apk add --no-cache py3-numpy
 RUN apk add --no-cache py3-opencv
-RUN apk add --no-cache bash
+# RUN apk add --no-cache bash
 
 # install .py script dependency
 RUN pip3 install --upgrade pip
