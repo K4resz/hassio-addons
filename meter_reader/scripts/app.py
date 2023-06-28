@@ -61,7 +61,7 @@ def error(msg):
 def classify(path_to_image, base_low, baseline, base_up, log):
     print("Calling model...")
     
-    global ocr_result
+    global ocrResult
     global reading
     mr_logs = log
     
@@ -76,13 +76,12 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     # apply median blurring to remove any blurring
     gray = cv2.medianBlur(gray, 3)
+    gray = cv2.bitwise_not(gray)
     # save the processed image in the /static/uploads directory
-    ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
-    prepimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
+    # ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
+    ocrimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
     cv2.imwrite(ocrimgpath, gray)
-    cv2.imwrite(prepimgpath, gray)
     
-
     # model access can be replaced here
     # =================================
     ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath))
@@ -90,8 +89,8 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     respContr = ocr_space_file(filename=ocrimgpath, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
     # =================================
 
-    # remove the processed image
-    os.remove(ocrimgpath)
+    # # remove the processed image
+    # os.remove(ocrimgpath)
 
     print("Model response received.")
     print(f"Response from TesseractOCR: {ocrResult}")
@@ -181,7 +180,7 @@ def run():
     global base_up
     global prev
     global reading
-    global ocr_result
+    global ocrResult
           
     print("Starting loop")
 
@@ -199,7 +198,7 @@ def run():
         reading = classify(IMAGE_PATH, base_low, baseline, base_up, mr_logs)
         print("Classification done.")
         mr_logs.write("Classification done.\n")
-        mr_logs.write(f"Tesseract OCR reading: {ocr_result}\n")
+        mr_logs.write(f"Tesseract OCR reading: {ocrResult}\n")
 
         print("Connecting to MQTT...")
         client = connect()
