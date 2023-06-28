@@ -1,6 +1,6 @@
 {
     "name": "Meter reader",
-    "version": "0.6.0_b68",
+    "version": "0.6.0_b69",
     "slug": "meterreader",
     "homeassistant_api": "no",
     "description": "Classify utility meter image with a OpenCV and Tesseract OCR and push the reading over mqtt.",
