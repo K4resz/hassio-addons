@@ -68,8 +68,14 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     
     global ocrResult
     global reading
+    global rowS
+    global rowE
+    global colS
+    global colE
+    global ksize
+    global inv
+
     mr_logs = log
-    
     ocrimgpath = IMAGE_PATH
 
     # preprocessing image
