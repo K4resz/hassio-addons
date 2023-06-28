@@ -26,7 +26,6 @@ RUN apk add --no-cache python3
 RUN apk add --no-cache py3-pip
 RUN apk add --no-cache py3-numpy
 RUN apk add --no-cache py3-opencv
-# RUN apk add --no-cache bash
 
 # install .py script dependency
 RUN pip3 install --upgrade pip
@@ -34,12 +33,9 @@ RUN pip3 install requests
 RUN pip3 install paho-mqtt
 RUN pip3 install python-dotenv
 RUN pip3 install pytesseract
-# RUN pip3 install opencv-contrib-python-headless
+
 
 # Copy data for add-on
-# COPY ocr_space.py /
-# COPY app.py /
-# COPY run.sh /
 COPY ./scripts/* /
 
 RUN chmod a+x /run.sh

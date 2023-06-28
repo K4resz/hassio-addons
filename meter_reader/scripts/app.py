@@ -3,7 +3,6 @@ import requests
 import os
 import json
 import time
-# from ocr_space import ocr_space_file
 import re
 import pytesseract
 from PIL import Image
@@ -85,8 +84,6 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # model access can be replaced here
     # =================================
     ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath))
-    # response = ocr_space_file(filename=IMAGE_PATH, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang1'], ocr_engine=config_json['ocr_engine'])
-    # respContr = ocr_space_file(filename=ocrimgpath, api_key=config_json['ocr_api_key'], language=config_json['ocr_lang2'], ocr_engine=config_json['ocr_engine'])
     # =================================
 
     # # remove the processed image
@@ -94,65 +91,13 @@ def classify(path_to_image, base_low, baseline, base_up, log):
 
     print("Model response received.")
     print(f"Response from TesseractOCR: {ocrResult}")
-    # print(f"Response from Ocr.Space: {response}")
-    # print(f"Response (control): {respContr}")
+    mr_logs.write(f"Response from TesseractOCR: {ocrResult}\n")
     
-
-    # processingError = json.loads(response)['IsErroredOnProcessing']
-    # processingErrorContr = json.loads(respContr)['IsErroredOnProcessing']
-
-    # if (processingError == True | processingErrorContr == True):
-    #     if (processingError == True):
-    #         processingErrorMessage = json.loads(response)['ErrorMessage'][0]
-    #     else:
-    #         processingErrorMessage = json.loads(respContr)['ErrorMessage'][0]
-    #     error(f"Processing Error! {processingErrorMessage}")
-    #     mr_logs.write(f"Processing Error! {processingErrorMessage}\n")
-    #     return ""
-    # else:
-        # # postprocessing reading to remove spaces/dots/commas/dashes/new lines
-        # # =================================
-        # print("Post-processing response...")
-        # parsedText = json.loads(response)['ParsedResults'][0]['ParsedText']
-        # processed = re.sub(r"( |,|\.|-|_|\n)", "", parsedText)[:8]
-        # parsedContr = json.loads(respContr)['ParsedResults'][0]['ParsedText']
-        # processedContr = re.sub(r"( |,|\.|-|_|\n)", "", parsedContr)[:8]
-        
-        # if (parsedText != parsedContr):
-        #     error(f"Postprocessing Error! Control reading does not match! {processed} : {processedContr}")
-        #     return ""
-        # else:
-        #     print(f"Recognised digits: {processed}")
-
-        #     # validate reading
-        #     # =================================
-        #     s = ""
-        #     for digit in processed:
-        #         try:
-        #             int(digit)
-        #             s += digit
-        #         except ValueError:
-        #             s += "0"
-
-        #     # check if reading is inside the expected range
-        #     # =================================
-        #     value = int(0 if s == "" else s)
-        #     if (base_low <= value and value <= base_up):
-        #         prev = reading
-        #         reading = s
-        #         print(base_low, value, base_up)
-        #     else:
-        #         error("Classification value is outside the acceptable (low-high) range.")
-        #         print(base_low, value, base_up)
-        #         mr_logs.write("Classification value is outside the acceptable (low-high) range.\n")
-        #         mr_logs.write(f"Value: {value}\n")
-        #         # reading = prev
-        #         return ""
-    
-    # postprocessing reading to remove spaces/dots/commas/dashes/new lines
+    # postprocessing reading to remove everithing but numbers
     # =================================
     processed = re.sub(r"[^0-9]", "", ocrResult)[:8]
     print(f"Recognised digits: {processed}")
+    mr_logs.write(f"Recognised digits: {processed}\n")
 
     # validate reading
     # =================================
@@ -228,7 +173,6 @@ def run():
         reading = classify(IMAGE_PATH, base_low, baseline, base_up, mr_logs)
         print("Classification done.")
         mr_logs.write("Classification done.\n")
-        mr_logs.write(f"Tesseract OCR reading: {ocrResult}\n")
 
         print("Connecting to MQTT...")
         client = connect()
