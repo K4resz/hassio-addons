@@ -38,6 +38,10 @@ max_decrease: maximum expected decrease during the reading period
 
 ksize: it must be odd and greater than 1, for example: 3, 5, 7 ...
 
+img_inverse: if true it will inverse image colors
+
+crop_*: if defined image will be cropped 
+
 ### MQTT
 
 mqtt_host, mqtt_port, mqtt_user, mqtt_pwd: find and get access to your MQTT server/broker
