@@ -22,6 +22,12 @@ IMAGE_TITLE = config_json['image_title']
 # IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
 IMAGE_PATH = os.path.join(FOLDER_PATH,IMAGE_TITLE)
 today = time.strftime("%Y%m%d")
+ksize = int(config_json['blur_ksize'])
+inv = config_json['img_inverse']
+rowS = int(config_json['crop_start_row'])
+rowE = int(config_json['crop_end_row'])
+colS = int(config_json['crop_start_col'])
+colE = int(config_json['crop_end_col'])
 
 # check/create log files
 # =================================
@@ -68,14 +74,39 @@ def classify(path_to_image, base_low, baseline, base_up, log):
 
     # preprocessing image
     # =================================
-    # load the image and convert it to grayscale
+    # load the image
     img = cv2.imread(IMAGE_PATH)
+
+    # crop image if values defined
+    if bool(rowS) | bool(rowE) | bool(colS) | bool(colE):
+        h, w, _ = img.shape
+        if rowS is None :
+            rowS = 0
+        if rowE is None or rowE > h :
+            rowE = h
+        if rowS > rowE :
+            rowS = 0
+            print("Invalid crop setting. Reseted to image height.")
+            mr_logs.write("Invalid crop setting. Reseted to image height.\n")
+        if colS is None :
+            colS = 0
+        if colE is None or colE > w :
+            colE = w
+        if colS > colE : 
+            colS = 0
+            print("Invalid crop setting. Reseted to image width.")
+            mr_logs.write("Invalid crop setting. Reseted to image widht.\n")
+        img = img[rowS:rowE, colS:colE]
+
+    # convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # apply thresholding to preprocess the image
     gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     # apply median blurring to remove any blurring
-    gray = cv2.medianBlur(gray, 3)
-    gray = cv2.bitwise_not(gray)
+    gray = cv2.medianBlur(gray, ksize)
+    if (inv == True):
+        gray = cv2.bitwise_not(gray)
+    
     # save the processed image in the /static/uploads directory
     # ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
     ocrimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))

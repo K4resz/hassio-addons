@@ -34,6 +34,10 @@ max_increase: maximum expected increase during the reading period
 
 max_decrease: maximum expected decrease during the reading period
 
+### OpenCV
+
+ksize: it must be odd and greater than 1, for example: 3, 5, 7 ...
+
 ### MQTT
 
 mqtt_host, mqtt_port, mqtt_user, mqtt_pwd: find and get access to your MQTT server/broker
