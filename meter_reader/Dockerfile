@@ -20,11 +20,13 @@ LABEL \
 
 RUN apk update
 RUN apk add --no-cache tesseract-ocr
+RUN apk add --no-cachetesseract-ocr-data-eng
 RUN apk add --no-cache curl 
 RUN apk add --no-cache python3 
 RUN apk add --no-cache py3-pip
 RUN apk add --no-cache py3-numpy
 RUN apk add --no-cache py3-opencv
+RUN apk add --no-cache bash
 
 # install .py script dependency
 RUN pip3 install --upgrade pip
