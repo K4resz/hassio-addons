@@ -35,9 +35,7 @@ RUN pip3 install pytesseract
 # RUN pip3 install opencv-contrib-python-headless
 
 # Copy data for add-on
-COPY ocr_space.py /
-COPY app.py /
-COPY run.sh /
+COPY ./scripts/* /
 
 RUN chmod a+x /run.sh
 
