@@ -78,7 +78,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     img = cv2.imread(IMAGE_PATH)
 
     # crop image if values defined
-    if bool(rowS) | bool(rowE) | bool(colS) | bool(colE):
+    if (rowS|rowE|colS|colE) is not None:
         h, w, _ = img.shape
         if rowS is None :
             rowS = 0
