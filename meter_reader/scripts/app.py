@@ -113,10 +113,11 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     ocrimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
     cv2.imwrite(ocrimgpath, gray)
 
+    ocroptions = "outputbase digits"
+
     # model access can be replaced here
     # =================================
-    # ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config='--psm 6')
-    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config='--digits')
+    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config=ocroptions)
     # =================================
 
     # # remove the processed image
