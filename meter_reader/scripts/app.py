@@ -5,6 +5,7 @@ import json
 import time
 import re
 import pytesseract
+import argparse
 from PIL import Image
 import cv2
 
@@ -18,12 +19,10 @@ f.close()
 
 UPLOAD_FOLDER = './static/uploads'
 FOLDER_PATH = config_json['folder_path']
-IMAGE_TITLE = config_json['image_title']
-# IMAGE_PATH = FOLDER_PATH + "/" + IMAGE_TITLE
-IMAGE_PATH = os.path.join(FOLDER_PATH,IMAGE_TITLE)
+IMAGE_PATH = config_json['snapshot_path']
 today = time.strftime("%Y%m%d")
 ksize = int(config_json['blur_ksize'])
-inv = config_json['img_inverse']
+imgInv = config_json['img_inverse']
 rowS = int(config_json['crop_start_row'])
 rowE = int(config_json['crop_end_row'])
 colS = int(config_json['crop_start_col'])
@@ -43,7 +42,7 @@ f = open(f"{FOLDER_PATH}/mr_lastread.txt")
 lastread = f.read()
 f.close()
 
-# check/udate last reading in file
+# check/update last reading in file
 # =================================
 lastvalue = int(0 if lastread == "" else lastread)
 if (lastvalue >= int(config_json["initial"])):
@@ -73,7 +72,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     global colS
     global colE
     global ksize
-    global inv
+    global imgInv
 
     mr_logs = log
     ocrimgpath = IMAGE_PATH
@@ -83,21 +82,17 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # load the image
     img = cv2.imread(IMAGE_PATH)
 
-    # crop image if values defined
+    # crop image if crop value defined
     if (rowS|rowE|colS|colE) is not None:
         h, w, _ = img.shape
-        if rowS is None :
-            rowS = 0
-        if rowE is None or rowE > h :
-            rowE = h
-        if rowS > rowE :
+        if rowE is None or rowE > h : rowE = h
+        if rowS is None : rowS = 0
+        if rowS > rowE : 
             rowS = 0
             print("Invalid crop setting. Reseted to image height.")
             mr_logs.write("Invalid crop setting. Reseted to image height.\n")
-        if colS is None :
-            colS = 0
-        if colE is None or colE > w :
-            colE = w
+        if colE is None or colE > w : colE = w
+        if colS is None : colS = 0
         if colS > colE : 
             colS = 0
             print("Invalid crop setting. Reseted to image width.")
@@ -110,7 +105,8 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     # apply median blurring to remove any blurring
     gray = cv2.medianBlur(gray, ksize)
-    if (inv == True):
+    # apply color inverese
+    if (imgInv == True):
         gray = cv2.bitwise_not(gray)
     
     # save the processed image in the /static/uploads directory
@@ -118,9 +114,19 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     ocrimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
     cv2.imwrite(ocrimgpath, gray)
     
+    # construct the argument parser and parse the arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--image", required=True,
+	    help="path to input image to be OCR'd")
+    ap.add_argument("-d", "--digits", type=int, default=1,
+	    help="whether or not *digits only* OCR will be performed")
+    args = vars(ap.parse_args())
+
+    options = "outputbase digits"
+
     # model access can be replaced here
     # =================================
-    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath))
+    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config=options)
     # =================================
 
     # # remove the processed image

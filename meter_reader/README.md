@@ -1,6 +1,6 @@
 # Meter Reader
 
-OpenCV and Tesseract OCR based meter reader.
+OpenCV and Tesseract OCR based utility meter reader.
 
 Put a webcam in front of your utility meter, OpenCV and Tesseract OCR classifies the image, and it sends the reading over MQTT server/broker of your choice.
 
@@ -22,11 +22,11 @@ https://www.home-assistant.io/integrations/sensor.mqtt/
 
 ### Reader
 
+folder_path: folder path where the  temporary files and run logs will be saved
+
+snapshot_path: image path where to find the snapshot from your meter camera
+
 upd_interval: value in seconds to be used as interval between data refreshes
-
-folder_path: where to find the snapshot of your meter camera image, and log will be saved
-
-image_title: title of snapshot
 
 initial: initial/current reading of your meter
 
@@ -36,11 +36,11 @@ max_decrease: maximum expected decrease during the reading period
 
 ### OpenCV
 
+crop_*: if defined image will be cropped 
+
 ksize: it must be odd and greater than 1, for example: 3, 5, 7 ...
 
 img_inverse: if true it will inverse image colors
-
-crop_*: if defined image will be cropped 
 
 ### MQTT
 
