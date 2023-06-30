@@ -5,7 +5,6 @@ import json
 import time
 import re
 import pytesseract
-import argparse
 from PIL import Image
 import cv2
 
@@ -116,7 +115,8 @@ def classify(path_to_image, base_low, baseline, base_up, log):
 
     # model access can be replaced here
     # =================================
-    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config='--psm 6')
+    # ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config='--psm 6')
+    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config='--digits')
     # =================================
 
     # # remove the processed image
