@@ -42,6 +42,10 @@ ksize: it must be odd and greater than 1, for example: 3, 5, 7 ...
 
 img_inverse: if true it will inverse image colors
 
+### OCR
+
+only_digits: if true only digits will be OCRed
+
 ### MQTT
 
 mqtt_host, mqtt_port, mqtt_user, mqtt_pwd: find and get access to your MQTT server/broker

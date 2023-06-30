@@ -1,6 +1,6 @@
 {
     "name": "Meter reader",
-    "version": "0.6.2_b7",
+    "version": "0.6.2_b8",
     "slug": "meterreader",
     "homeassistant_api": "no",
     "description": "Classify utility meter image with OpenCV and Tesseract OCR and push the reading over mqtt",
@@ -30,6 +30,7 @@
         "crop_end_col": null,
         "blur_ksize": 3,
         "img_inverse": true,
+        "only_digits": false,
         "mqtt_host": "192.168.x.x", 
         "mqtt_port": 1883, 
         "mqtt_user": null, 
@@ -49,6 +50,7 @@
         "crop_end_col": "int(0,)?",
         "blur_ksize": "int(3,)",
         "img_inverse": "bool",
+        "only_digits": "bool",
         "mqtt_host": "str", 
         "mqtt_port": "int", 
         "mqtt_user": "str", 

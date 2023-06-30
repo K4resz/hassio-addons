@@ -26,6 +26,7 @@ rowS = int(config_json['crop_start_row'])
 rowE = int(config_json['crop_end_row'])
 colS = int(config_json['crop_start_col'])
 colE = int(config_json['crop_end_col'])
+oDigits = config_json['only_digits']
 
 # check/create log files
 # =================================
@@ -72,6 +73,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     global colE
     global ksize
     global imgInv
+    global oDigits
 
     mr_logs = log
     ocrimgpath = IMAGE_PATH
@@ -113,7 +115,10 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     ocrimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
     cv2.imwrite(ocrimgpath, gray)
 
-    ocroptions = "outputbase digits"
+    if oDigits == True: 
+        ocroptions = "outputbase digits"
+    else:
+        ocroptions = ""
 
     # model access can be replaced here
     # =================================
