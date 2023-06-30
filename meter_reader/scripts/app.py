@@ -113,20 +113,10 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # ocrimgpath = os.path.join(UPLOAD_FOLDER,"{}.png".format(os.getpid()))
     ocrimgpath = os.path.join(FOLDER_PATH,"{}.png".format(os.getpid()))
     cv2.imwrite(ocrimgpath, gray)
-    
-    # construct the argument parser and parse the arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--image", required=True,
-	    help="path to input image to be OCR'd")
-    ap.add_argument("-d", "--digits", type=int, default=1,
-	    help="whether or not *digits only* OCR will be performed")
-    args = vars(ap.parse_args())
-
-    options = "outputbase digits"
 
     # model access can be replaced here
     # =================================
-    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config=options)
+    ocrResult = pytesseract.image_to_string(Image.open(ocrimgpath), config='--psm 6')
     # =================================
 
     # # remove the processed image
