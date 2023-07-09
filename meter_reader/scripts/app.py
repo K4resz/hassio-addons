@@ -20,6 +20,8 @@ UPLOAD_FOLDER = './static/uploads'
 FOLDER_PATH = config_json['folder_path']
 IMAGE_PATH = config_json['snapshot_path']
 today = time.strftime("%Y%m%d")
+trsh_min = int(config_json['trsh_min'])
+trsh_max = int(config_json['trsh_max'])
 ksize = int(config_json['blur_ksize'])
 imgInv = config_json['img_inverse']
 rowS = int(config_json['crop_start_row'])
@@ -27,6 +29,7 @@ rowE = int(config_json['crop_end_row'])
 colS = int(config_json['crop_start_col'])
 colE = int(config_json['crop_end_col'])
 oDigits = config_json['only_digits']
+
 
 # check/create log files
 # =================================
@@ -74,6 +77,8 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     global ksize
     global imgInv
     global oDigits
+    global trsh_min
+    global trsh_max
 
     mr_logs = log
     ocrimgpath = IMAGE_PATH
@@ -103,7 +108,7 @@ def classify(path_to_image, base_low, baseline, base_up, log):
     # convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # apply thresholding to preprocess the image
-    gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    gray = cv2.threshold(gray, trsh_min, trsh_max, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     # apply median blurring to remove any blurring
     gray = cv2.medianBlur(gray, ksize)
     # apply color inverese
